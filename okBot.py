@@ -64,7 +64,7 @@ while True:
 
 
 			tradeAPI.close_positions(coin, 'cross', ccy='USDT')
-			result = tradeAPI.place_order(instId=coin, tdMode='cross', side='sell', ordType='market', sz=str(every_exchange_amount/price), ccy='USDT')
+			result = tradeAPI.place_order(instId=coin, tdMode='cross', side='sell', ordType='market', sz=str(every_exchange_amount), ccy='USDT')
 			accountAPI.set_leverage(instId=coin, lever=str(m), mgnMode='cross')
 			
 			if "'code': '0'," in result:
@@ -76,7 +76,7 @@ while True:
 		if price < np.load("price.npy")*(1-exchange_spread) and low_price < price*(1-exchange_ret):
 
 			tradeAPI.close_positions(coin, 'cross', ccy='USDT')
-			result = tradeAPI.place_order(instId=coin, tdMode='cross', side='buy', ordType='market', sz=str(every_exchange_amount/price), ccy='USDT')
+			result = tradeAPI.place_order(instId=coin, tdMode='cross', side='buy', ordType='market', sz=str(every_exchange_amount), ccy='USDT')
 			accountAPI.set_leverage(instId=coin, lever=str(m), mgnMode='cross')
 			
 			if "'code': '0'," in result:
@@ -89,10 +89,10 @@ while True:
 		print(text)
 		print("\n ------------------------------------------\n", "當前價格 :", '%.10f'%price,"\n","目前最高價 :",high_price,"\n","目前最低價 :",low_price,"\n","平衡價格 :", np.load("price.npy"),"\n ------------------------------------------")
 		print(" 總資金(USDT) :", total, "\n", "獲利(USDT) :", total-np.load("get.npy"),  "\n","獲利年化 :", ((total-np.load("get.npy"))/total)*86400/(time.time()-start_time), "%\n ------------------------------------------\n")
-		time.sleep(10)
+		time.sleep(20)
 	except:
 		print(" error : 網路錯誤 或是 資金不足")
-		time.sleep(10)
+		time.sleep(20)
 		
 	# result = accountAPI.get_account('USDT')
 	# 查看账户持仓风险 GET Position_risk
