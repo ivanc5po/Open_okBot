@@ -62,9 +62,11 @@ while True:
 
 		if price > np.load("price.npy")*(1+exchange_spread) and high_price > price*(1+exchange_ret):
 
-
-			tradeAPI.close_positions(coin, 'cross', ccy='USDT')
-			result = tradeAPI.place_order(instId=coin, tdMode='cross', side='sell', ordType='market', sz=str(every_exchange_amount), ccy='USDT')
+			try:
+				tradeAPI.close_positions(coin, 'cross', ccy='USDT')
+			except:
+				q = 0
+			result = tradeAPI.place_order(instId=coin, tdMode='cross', side='sell', ordType='market', sz=str(every_exchange_amount*m/price), ccy='USDT')
 			accountAPI.set_leverage(instId=coin, lever=str(m), mgnMode='cross')
 			
 			if "'code': '0'," in result:
@@ -75,8 +77,11 @@ while True:
 				
 		if price < np.load("price.npy")*(1-exchange_spread) and low_price < price*(1-exchange_ret):
 
-			tradeAPI.close_positions(coin, 'cross', ccy='USDT')
-			result = tradeAPI.place_order(instId=coin, tdMode='cross', side='buy', ordType='market', sz=str(every_exchange_amount), ccy='USDT')
+			try:
+				tradeAPI.close_positions(coin, 'cross', ccy='USDT')
+			except:
+				q = 0
+			result = tradeAPI.place_order(instId=coin, tdMode='cross', side='buy', ordType='market', sz=str(every_exchange_amount*m), ccy='USDT')
 			accountAPI.set_leverage(instId=coin, lever=str(m), mgnMode='cross')
 			
 			if "'code': '0'," in result:
