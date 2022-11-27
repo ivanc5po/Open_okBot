@@ -33,7 +33,6 @@ publicAPI = Public.PublicAPI(api_key, secret_key, passphrase, False, flag)
 tradeAPI = Trade.TradeAPI(api_key, secret_key, passphrase, False, flag)
 
 coin = input("交易對 (XXX-USDT): ")
-m = input("槓桿倍數 : ")
 every_exchange_amount = float(input("單次交易量(USDT) : "))
 exchange_ret = float(input("回撤比率(%) : "))/100
 exchange_spread = float(input("安全範圍(%) : "))/100
@@ -66,8 +65,7 @@ while True:
 				tradeAPI.close_positions(coin, 'cross', ccy='USDT')
 			except:
 				q = 0
-			result = tradeAPI.place_order(instId=coin, tdMode='cross', side='sell', ordType='market', sz=str(every_exchange_amount*m/price), ccy='USDT')
-			accountAPI.set_leverage(instId=coin, lever=str(m), mgnMode='cross')
+			result = tradeAPI.place_order(instId=coin, tdMode='cash', side='sell', ordType='market', sz=str(every_exchange_amount/price), ccy='USDT')			
 			
 			if "'code': '0'," in result:
 				np.save("price", price)
@@ -81,8 +79,7 @@ while True:
 				tradeAPI.close_positions(coin, 'cross', ccy='USDT')
 			except:
 				q = 0
-			result = tradeAPI.place_order(instId=coin, tdMode='cross', side='buy', ordType='market', sz=str(every_exchange_amount*m), ccy='USDT')
-			accountAPI.set_leverage(instId=coin, lever=str(m), mgnMode='cross')
+			result = tradeAPI.place_order(instId=coin, tdMode='cash', side='buy', ordType='market', sz=str(every_exchange_amount), ccy='USDT')
 			
 			if "'code': '0'," in result:
 				np.save("price", price)
